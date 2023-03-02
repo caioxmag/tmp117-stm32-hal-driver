@@ -19,7 +19,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include <i2c.h>
+#include <stm32f3xx_hal.h>
 #include <math.h>
 
 /* user defines ------------------------- */
