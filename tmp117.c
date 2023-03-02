@@ -1,10 +1,10 @@
 /*
  ******************************************************************************
- * @file:		tmp117.c
- * @author: 	Vladimir Vakhter
- * @version:	0.1a
- * @date: 		Apr 5, 2022
- * @brief:		STM32 HAL-based library for the TMP117 temperature sensor.
+ * @file:     tmp117.c
+ * @author:   Vladimir Vakhter
+ * @version:  0.1a
+ * @date:     Apr 5, 2022
+ * @brief:    STM32 HAL-based library for the TMP117 temperature sensor.
  ******************************************************************************     
  */
 
@@ -35,10 +35,10 @@ static bool isEEPROMbusy(I2C_HandleTypeDef* i2c, uint8_t buffer[]);			// check w
 /*
  * @brief  initialize sensor
  *
- * @param 	i2c			I2C handler
- * @param		buffer	buffer for the I2C data exchange
+ * @param   i2c     I2C handler
+ * @param   buffer  buffer for the I2C data exchange
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_init(I2C_HandleTypeDef* i2c, uint8_t buffer[])
 {
@@ -69,11 +69,11 @@ bool tmp117_init(I2C_HandleTypeDef* i2c, uint8_t buffer[])
 /*
  * @brief  get result temperature
  *
- * @param 	i2c			I2C handler
- * @param		buffer	buffer for the I2C data exchange
- * @param 	temp_c	temperature value (Celsius)
+ * @param   i2c     I2C handler
+ * @param   buffer  buffer for the I2C data exchange
+ * @param   temp_c  temperature value (Celsius)
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_getResultTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp_c)
 {
@@ -83,11 +83,11 @@ bool tmp117_getResultTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], doubl
 /*
  * @brief  get chip id
  *
- * @param 	i2c			I2C handler
- * @param		buffer	buffer for the I2C data exchange
- * @param 	id			chip ID
+ * @param   i2c     I2C handler
+ * @param   buffer  buffer for the I2C data exchange
+ * @param   id      chip ID
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_getDeviceID(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t* id)
 {
@@ -97,11 +97,11 @@ bool tmp117_getDeviceID(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t* id)
 /*
  * @brief  get configuration register
  *
- * @param 	i2c			I2C handler
- * @param		buffer	buffer for the I2C data exchange
- * @param 	config	configuration register value
+ * @param   i2c     I2C handler
+ * @param   buffer  buffer for the I2C data exchange
+ * @param   config  configuration register value
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_getConfig(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t* config)
 {
@@ -111,11 +111,11 @@ bool tmp117_getConfig(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t* config
 /*
  * @brief  set configuration register
  *
- * @param 	i2c			I2C handler
- * @param		buffer	buffer for the I2C data exchange
- * @param 	config	configuration register value
+ * @param   i2c     I2C handler
+ * @param   buffer  buffer for the I2C data exchange
+ * @param   config  configuration register value
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool setConfig(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t config)
 {
@@ -125,11 +125,11 @@ bool setConfig(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t config)
 /*
  * @brief  set averaging
  *
- * @param 	i2c			I2C handler
- * @param		buffer	buffer for the I2C data exchange
- * @param 	avg			averaging
+ * @param   i2c     I2C handler
+ * @param   buffer  buffer for the I2C data exchange
+ * @param   avg     averaging
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_setAveraging(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_AVG_MODE avg)
 {
@@ -151,11 +151,11 @@ bool tmp117_setAveraging(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_AVG_MO
 /*
  * @brief  set alert mode
  *
- * @param 	i2c			I2C handler
- * @param		buffer	buffer for the I2C data exchange
- * @param 	mode		alert mode (alert/thermal/data)
+ * @param   i2c     I2C handler
+ * @param   buffer  buffer for the I2C data exchange
+ * @param   mode    alert mode (alert/thermal/data)
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_setAlertMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_TnA_MODE mode)
 {
@@ -186,11 +186,11 @@ bool tmp117_setAlertMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_TnA_MO
 /*
  * @brief  set conversion mode
  *
- * @param 	i2c			I2C handler
- * @param		buffer	buffer for the I2C data exchange
- * @param 	mode		conversion
+ * @param   i2c     I2C handler
+ * @param   buffer  buffer for the I2C data exchange
+ * @param   mode    conversion
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_setConversionMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_CONV_MODE mode) {
 	// value of configuration register
@@ -208,12 +208,12 @@ bool tmp117_setConversionMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_C
 
 /*
  * @brief  set software reset bit: when set to 1, triggers software reset with a duration of 2ms.
- * 				 This bit will always read back 0.
+ *         This bit will always read back 0.
  *
- * @param 	i2c			I2C handler
- * @param		buffer	buffer for the I2C data exchange
+ * @param   i2c     I2C handler
+ * @param   buffer  buffer for the I2C data exchange
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_softwareReset(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
 	// value of configuration register
@@ -231,11 +231,11 @@ bool tmp117_softwareReset(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
 /*
  * @brief  set alert pin polarity
  *
- * @param 	i2c				I2C handler
- * @param		buffer		buffer for the I2C data exchange
- * @param		polarity	alert pin polarity
+ * @param   i2c       I2C handler
+ * @param   buffer    buffer for the I2C data exchange
+ * @param   polarity  alert pin polarity
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_setAlertPolarity(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_ALERT_PIN_POL polarity) {
 	// value of configuration register
@@ -254,18 +254,18 @@ bool tmp117_setAlertPolarity(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_AL
 
 /*
  * @brief  set conversion time:
- * 						- continuous mode:
- * 								 -- active conversion time is defined by averaging
- * 								 -- standby time is defined as conversion cycle time minus active conversion time
-* 						- one-shot mode:
-* 								 -- the duration of a one-shot conversion is only affected by the AVG bit settings
-* 								 -- there is no standby time (an I2C read is initiated by the user)
+ *            - continuous mode:
+ *                 -- active conversion time is defined by averaging
+ *                 -- standby time is defined as conversion cycle time minus active conversion time
+ *            - one-shot mode:
+ *                 -- the duration of a one-shot conversion is only affected by the AVG bit settings
+ *                 -- there is no standby time (an I2C read is initiated by the user)
  *
- * @param 	i2c					I2C handler
- * @param		buffer			buffer for the I2C data exchange
- * @param		conv_time		conversion time
+ * @param   i2c         I2C handler
+ * @param   buffer      buffer for the I2C data exchange
+ * @param   conv_time   conversion time
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_setConversionTime(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_CONV_TIME conv_time) {
 	// value of configuration register
@@ -284,15 +284,15 @@ bool tmp117_setConversionTime(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_C
 
 /*
  * @brief  set offset temperature for system correction:
- * 						- sets a user-defined temperature offset during system calibration
- * 						- this offset is added to the temperature result after linearization
- * 						- the offset has the same resolution (7.8125m°C) and range (+-256°C) as the temperature register
+ *            - sets a user-defined temperature offset during system calibration
+ *            - this offset is added to the temperature result after linearization
+ *            - the offset has the same resolution (7.8125m°C) and range (+-256°C) as the temperature register
  *
- * @param 	i2c					I2C handler
- * @param		buffer			buffer for the I2C data exchange
- * @param		offset			offset temperature
+ * @param   i2c         I2C handler
+ * @param   buffer      buffer for the I2C data exchange
+ * @param   offset      offset temperature
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool setOffsetTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double offset) {
 	// convert to two's complement
@@ -306,11 +306,11 @@ bool setOffsetTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double offse
 /*
  * @brief  get offset temperature
  *
- * @param 	i2c					I2C handler
- * @param		buffer			buffer for the I2C data exchange
- * @param		offset			offset temperature
+ * @param   i2c         I2C handler
+ * @param   buffer      buffer for the I2C data exchange
+ * @param   offset      offset temperature
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_getOffsetTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* offset) {
 	return getTemperature(i2c, buffer, TMP117_TEMP_OFFSET_REG, offset);
@@ -318,15 +318,15 @@ bool tmp117_getOffsetTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], doubl
 
 /*
  * @brief  set the high limit temperature for system:
- * 						- the limit has the same resolution (7.8125m°C) and range (+-256°C) as the temperature register
- * 						- following power-up or a general-call reset, the high-limit register is loaded with the
- * 						  stored value from the EEPROM. The factory default reset value is 6000h.
+ *            - the limit has the same resolution (7.8125m°C) and range (+-256°C) as the temperature register
+ *            - following power-up or a general-call reset, the high-limit register is loaded with the
+ *              stored value from the EEPROM. The factory default reset value is 6000h.
  *
- * @param 	i2c					I2C handler
- * @param		buffer			buffer for the I2C data exchange
- * @param		temp				temperature
+ * @param   i2c         I2C handler
+ * @param   buffer      buffer for the I2C data exchange
+ * @param   temp        temperature
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_setHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double temp) {
 	// convert to two's complement
@@ -339,15 +339,15 @@ bool tmp117_setHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], do
 
 /*
  * @brief  set the low limit temperature for system:
- * 						- the limit has the same resolution (7.8125m°C) and range (+-256°C) as the temperature register
- * 						- following power-up or reset, the low-limit register is loaded with the stored value from the EEPROM.
- * 							The factory default reset value is 8000h.
+ *            - the limit has the same resolution (7.8125m°C) and range (+-256°C) as the temperature register
+ *            - following power-up or reset, the low-limit register is loaded with the stored value from the EEPROM.
+ *              The factory default reset value is 8000h.
  *
- * @param 	i2c					I2C handler
- * @param		buffer			buffer for the I2C data exchange
- * @param		temp				temperature
+ * @param   i2c         I2C handler
+ * @param   buffer      buffer for the I2C data exchange
+ * @param   temp        temperature
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_setLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double temp) {
 	// convert to two's complement
@@ -361,11 +361,11 @@ bool tmp117_setLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], dou
 /*
  * @brief  get high limit temperature
  *
- * @param 	i2c					I2C handler
- * @param		buffer			buffer for the I2C data exchange
- * @param		offset			offset temperature
+ * @param   i2c         I2C handler
+ * @param   buffer      buffer for the I2C data exchange
+ * @param   offset      offset temperature
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_getHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp) {
 	return getTemperature(i2c, buffer, TMP117_THIGH_LIM_REG, temp);
@@ -374,11 +374,11 @@ bool tmp117_getHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], do
 /*
  * @brief  get low limit temperature
  *
- * @param 	i2c					I2C handler
- * @param		buffer			buffer for the I2C data exchange
- * @param		offset			offset temperature
+ * @param   i2c         I2C handler
+ * @param   buffer      buffer for the I2C data exchange
+ * @param   offset      offset temperature
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_getLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp) {
 	return getTemperature(i2c, buffer, TMP117_TLOW_LIM_REG, temp);
@@ -386,14 +386,14 @@ bool tmp117_getLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], dou
 
 /*
  * @brief  calibrate sensor:
- * 						- temp - target temperature for calibration (the difference between this value
- * 										 and the result temperature value from the sensor will be passed as an offset for the sensor
+ *            - temp - target temperature for calibration (the difference between this value
+ *                     and the result temperature value from the sensor will be passed as an offset for the sensor
  *
- * @param 	i2c					I2C handler
- * @param		buffer			buffer for the I2C data exchange
- * @param		temp				target temperature
+ * @param   i2c         I2C handler
+ * @param   buffer      buffer for the I2C data exchange
+ * @param   temp        target temperature
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_calibrate(I2C_HandleTypeDef* i2c, uint8_t buffer[], double target_temp) {
 	double actual_temp = 0;
@@ -405,12 +405,12 @@ bool tmp117_calibrate(I2C_HandleTypeDef* i2c, uint8_t buffer[], double target_te
 /*
  * @brief  read EEPROM
  *
- * @param 	i2c					I2C handler
- * @param		buffer			buffer for the I2C data exchange
- * @param		eeprom_num	EEPROM location's number (1, 2, or 3)
- * @param		data				location to store the data read from a EEPROM location
+ * @param   i2c         I2C handler
+ * @param   buffer      buffer for the I2C data exchange
+ * @param   eeprom_num  EEPROM location's number (1, 2, or 3)
+ * @param   data        location to store the data read from a EEPROM location
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_readEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t eeprom_num, uint16_t* data) {
 	if ((eeprom_num < 1) || (eeprom_num > 3)) return false;
@@ -441,12 +441,12 @@ bool tmp117_readEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t eeprom
 /*
  * @brief  write EEPROM:
  *
- * @param 	i2c					I2C handler
- * @param		buffer			buffer for the I2C data exchange
- * @param		data				data to write into a EEPROM location
- * @param		eeprom_num	EEPROM location's number (1, 2, or 3)
+ * @param   i2c         I2C handler
+ * @param   buffer      buffer for the I2C data exchange
+ * @param   data        data to write into a EEPROM location
+ * @param   eeprom_num  EEPROM location's number (1, 2, or 3)
  *
- * @return	'true' if the data exchange was successful, otherwise - 'false'
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_writeEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t data, uint8_t eeprom_num) {
 	if ((eeprom_num < 1) || (eeprom_num > 3)) return false;
@@ -493,11 +493,11 @@ bool tmp117_writeEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t data
 }
 
 /*
- * @brief  	convert a two's complement value to its decimal form
- * 						- conversion theory: https://sandbox.mc.edu/~bennet/cs110/tc/tctod.html
+ * @brief   convert a two's complement value to its decimal form
+ *            - conversion theory: https://sandbox.mc.edu/~bennet/cs110/tc/tctod.html
  *
- * @param  	two_complement_val		a two's compliment value to be converted
- * @return	a 16-bit integer conversion result
+ * @param   two_complement_val    a two's compliment value to be converted
+ * @return  a 16-bit integer conversion result
  */
 int16_t twosCompToInt(uint16_t two_complement_val)
 {
@@ -518,11 +518,11 @@ int16_t twosCompToInt(uint16_t two_complement_val)
 }
 
 /*
- * @brief  	convert an integer value to its two's complement form
- * 						- conversion theory: http://sandbox.mc.edu/~bennet/cs110/tc/dtotc.html
+ * @brief   convert an integer value to its two's complement form
+ *            - conversion theory: http://sandbox.mc.edu/~bennet/cs110/tc/dtotc.html
  *
- * @param			a 16-bit integer value to be converted
- * @return	 	a two's compliment conversion result
+ * @param     a 16-bit integer value to be converted
+ * @return    a two's compliment conversion result
  */
 static uint16_t intToTwosComp(int16_t int_val) {
 	// if positive
@@ -537,13 +537,13 @@ static uint16_t intToTwosComp(int16_t int_val) {
 /*
  * @brief  get a 16-bit register value
  *
- * @param 	i2c					I2C handler
- * @param		buffer			buffer for the I2C data exchange
- * @param		reg_addr		register address
- * @param		reg_value		register value
-*
-* @return	'true' if the data exchange was successful, otherwise - 'false'
-*/
+ * @param   i2c         I2C handler
+ * @param   buffer      buffer for the I2C data exchange
+ * @param   reg_addr    register address
+ * @param   reg_value   register value
+ *
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
+ */
 bool readReg2B(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t reg_addr, uint16_t* reg_value)
 {
 	HAL_StatusTypeDef ret;																			// return status of i2c
@@ -574,13 +574,13 @@ bool readReg2B(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t reg_addr, uint1
 /*
  * @brief  write a 16-bit register value
  *
- * @param 	i2c					I2C handler
- * @param		buffer			buffer for the I2C data exchange
- * @param		reg_addr		register address
- * @param		reg_value		register value
-*
-* @return	'true' if the data exchange was successful, otherwise - 'false'
-*/
+ * @param   i2c         I2C handler
+ * @param   buffer      buffer for the I2C data exchange
+ * @param   reg_addr    register address
+ * @param   reg_value   register value
+ *
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
+ */
 bool writeReg2B(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t reg_addr, uint16_t reg_value)
 {
 	HAL_StatusTypeDef ret;						// return status of i2c
@@ -601,13 +601,13 @@ bool writeReg2B(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t reg_addr, uint
 /*
  * @brief  get a temperature value (result or offset)
  *
- * @param 	i2c					I2C handler
- * @param		buffer			buffer for the I2C data exchange
- * @param		reg_addr		register address
- * @param		result			temperature value
-*
-* @return	'true' if the data exchange was successful, otherwise - 'false'
-*/
+ * @param   i2c         I2C handler
+ * @param   buffer      buffer for the I2C data exchange
+ * @param   reg_addr    register address
+ * @param   result      temperature value
+ *
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
+ */
 bool getTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t reg_addr, double* result) {
 	uint16_t twos_comp_temp_val = 0;
 	if (!readReg2B(i2c, buffer, reg_addr, &twos_comp_temp_val)) return false;
@@ -620,15 +620,15 @@ bool getTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t reg_addr, 
 }
 
 /*
- * @brief  	lock EEPROM:
- * 						- writes to all EEPROM addresses (such as configuration, limits, and EEPROM locations 1-4)
- * 						  are written to registers in digital logic and are not programmed in the EEPROM
+ * @brief   lock EEPROM:
+ *            - writes to all EEPROM addresses (such as configuration, limits, and EEPROM locations 1-4)
+ *              are written to registers in digital logic and are not programmed in the EEPROM
  *
- * @param 	i2c					I2C handler
- * @param		buffer			buffer for the I2C data exchange
-*
-* @return	'true' if the data exchange was successful, otherwise - 'false'
-*/
+ * @param   i2c         I2C handler
+ * @param   buffer      buffer for the I2C data exchange
+ *
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
+ */
 bool lockEEPROM(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
 	// reset bit 15 (EUN) of the EEPROM Unlock Register
 	uint16_t code = 0;
@@ -637,14 +637,14 @@ bool lockEEPROM(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
 }
 
 /*
- * @brief  	unlock EEPROM:
- * 						- when unlocked, any writes to programmable registers program the respective location in the EEPROM
+ * @brief   unlock EEPROM:
+ *            - when unlocked, any writes to programmable registers program the respective location in the EEPROM
  *
- * @param 	i2c					I2C handler
- * @param		buffer			buffer for the I2C data exchange
-*
-* @return	'true' if the data exchange was successful, otherwise - 'false'
-*/
+ * @param   i2c         I2C handler
+ * @param   buffer      buffer for the I2C data exchange
+ *
+ * @return  'true' if the data exchange was successful, otherwise - 'false'
+ */
 bool unlockEEPROM(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
 	// set bit 15 (EUN) of the EEPROM Unlock Register
 	uint16_t code = 0;
@@ -653,17 +653,17 @@ bool unlockEEPROM(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
 }
 
 /*
- * @brief  	check whether EEPROM is busy:
- * 						- indicates if the EEPROM is busy, which means that the EEPROM is currently completing
- * 						  a programming operation or performing power-up on reset load
- * 						- if returns false, the EEPROM is ready, which means that the EEPROM has finished the
- * 						  last transaction and is ready to accept new commands
+ * @brief   check whether EEPROM is busy:
+ *            - indicates if the EEPROM is busy, which means that the EEPROM is currently completing
+ *              a programming operation or performing power-up on reset load
+ *            - if returns false, the EEPROM is ready, which means that the EEPROM has finished the
+ *              last transaction and is ready to accept new commands
  *
- * @param 	i2c					I2C handler
- * @param		buffer			buffer for the I2C data exchange
-*
-* @return	'true' if the EEPROM is busy, otherwise - 'false'
-*/
+ * @param   i2c         I2C handler
+ * @param   buffer      buffer for the I2C data exchange
+ *
+ * @return  'true' if the EEPROM is busy, otherwise - 'false'
+ */
 static bool isEEPROMbusy(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
 	uint16_t code = 0;
 	if (!readReg2B(i2c, buffer,	TMP117_EEPROM_UL_REG, &code)) return false;
