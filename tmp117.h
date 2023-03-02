@@ -133,31 +133,31 @@ typedef enum {
 /* public functions (API) ----------------------- */
 
 /* settings --------------- */
-bool init(I2C_HandleTypeDef* i2c, uint8_t buffer[]); 																							// initialize the sensor
-bool setAveraging(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_AVG_MODE avg);									// set averaging
-bool setAlertMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_TnA_MODE mode);								// set alert mode
-bool setAlertPolarity(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_ALERT_PIN_POL polarity);		// set alert polarity
-bool setConversionMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_CONV_MODE mode);					// set conversion mode
-bool setConversionTime(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_CONV_TIME conv_time);			// set conversion time
-bool softwareReset(I2C_HandleTypeDef* i2c, uint8_t buffer[]);																			// software reset
+bool tmp117_init(I2C_HandleTypeDef* i2c, uint8_t buffer[]); 																							// initialize the sensor
+bool tmp117_setAveraging(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_AVG_MODE avg);									// set averaging
+bool tmp117_setAlertMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_TnA_MODE mode);								// set alert mode
+bool tmp117_setAlertPolarity(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_ALERT_PIN_POL polarity);		// set alert polarity
+bool tmp117_setConversionMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_CONV_MODE mode);					// set conversion mode
+bool tmp117_setConversionTime(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_CONV_TIME conv_time);			// set conversion time
+bool tmp117_softwareReset(I2C_HandleTypeDef* i2c, uint8_t buffer[]);																			// software reset
 
-bool getConfig(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t* config);												// get configuration register value
-bool getDeviceID(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t* id);													// get device ID
+bool tmp117_getConfig(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t* config);												// get configuration register value
+bool tmp117_getDeviceID(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t* id);													// get device ID
 
 /* temperature --------------- */
-bool setHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double temp);							// set high limit temperature
-bool setLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double temp);               // set low limit temperature
+bool tmp117_setHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double temp);							// set high limit temperature
+bool tmp117_setLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double temp);               // set low limit temperature
 
-bool getResultTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp_c); 							// get result temperature
-bool getOffsetTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* offset);							// get offset temperature
-bool getHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp);							// get high limit temperature
-bool getLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp);							// get low limit temperature
+bool tmp117_getResultTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp_c); 							// get result temperature
+bool tmp117_getOffsetTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* offset);							// get offset temperature
+bool tmp117_getHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp);							// get high limit temperature
+bool tmp117_getLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp);							// get low limit temperature
 
 /* calibration --------------- */
-bool calibrate(I2C_HandleTypeDef* i2c, uint8_t buffer[], double target_temp);											// calibrate sensor
+bool tmp117_calibrate(I2C_HandleTypeDef* i2c, uint8_t buffer[], double target_temp);											// calibrate sensor
 
 /* EEPROM --------------- */
-bool readEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t eeprom_num, uint16_t* data);		// read EEPROM
-bool writeEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t data, uint8_t eeprom_num);		// write EEPROM
+bool tmp117_readEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t eeprom_num, uint16_t* data);		// read EEPROM
+bool tmp117_writeEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t data, uint8_t eeprom_num);		// write EEPROM
 
 #endif /* INC_ICAS_TMP117_H_ */

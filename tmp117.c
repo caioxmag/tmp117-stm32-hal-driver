@@ -40,24 +40,24 @@ static bool isEEPROMbusy(I2C_HandleTypeDef* i2c, uint8_t buffer[]);			// check w
  *
  * @return	'true' if the data exchange was successful, otherwise - 'false'
  */
-bool init(I2C_HandleTypeDef* i2c, uint8_t buffer[])
+bool tmp117_init(I2C_HandleTypeDef* i2c, uint8_t buffer[])
 {
 	bool init_complete_status = false;
 
 	// set conversion mode
-	setConversionMode(i2c, buffer, TMP117_SD_MODE);		// TODO set the shutdown mode as default on start-up
+	tmp117_setConversionMode(i2c, buffer, TMP117_SD_MODE);		// TODO set the shutdown mode as default on start-up
 																										// (see the datasheet, p.15); otherwise, it will start in CC
 	// set conversion time
-	setConversionTime(i2c, buffer, TMP117_C16S);
+	tmp117_setConversionTime(i2c, buffer, TMP117_C16S);
 
 	// set active high polarity of the ALERT pin
-	setAlertPolarity(i2c, buffer, TMP117_POL_H);
+	tmp117_setAlertPolarity(i2c, buffer, TMP117_POL_H);
 
 	// set averaging
-	init_complete_status = setAveraging(i2c, buffer, TMP117_AVG_8);
+	init_complete_status = tmp117_setAveraging(i2c, buffer, TMP117_AVG_8);
 
 	// set alert mode
-	init_complete_status = setAlertMode(i2c, buffer, TMP117_DATA_MODE);
+	init_complete_status = tmp117_setAlertMode(i2c, buffer, TMP117_DATA_MODE);
 
 	// TODO set offset temperature
 	// TODO set low limit
@@ -75,7 +75,7 @@ bool init(I2C_HandleTypeDef* i2c, uint8_t buffer[])
  *
  * @return	'true' if the data exchange was successful, otherwise - 'false'
  */
-bool getResultTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp_c)
+bool tmp117_getResultTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp_c)
 {
 	return getTemperature(i2c, buffer, TMP117_TEMP_RES_REG, temp_c);
 }
@@ -89,7 +89,7 @@ bool getResultTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp
  *
  * @return	'true' if the data exchange was successful, otherwise - 'false'
  */
-bool getDeviceID(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t* id)
+bool tmp117_getDeviceID(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t* id)
 {
 	return readReg2B(i2c, buffer, TMP117_DEVICE_ID_REG, id);
 }
@@ -103,7 +103,7 @@ bool getDeviceID(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t* id)
  *
  * @return	'true' if the data exchange was successful, otherwise - 'false'
  */
-bool getConfig(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t* config)
+bool tmp117_getConfig(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t* config)
 {
 	return readReg2B(i2c, buffer, TMP117_CONFIG_REG, config);
 }
@@ -131,12 +131,12 @@ bool setConfig(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t config)
  *
  * @return	'true' if the data exchange was successful, otherwise - 'false'
  */
-bool setAveraging(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_AVG_MODE avg)
+bool tmp117_setAveraging(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_AVG_MODE avg)
 {
 	uint16_t reg_config_val = 0; // value of configuration register
 
 	// get configuration register
-	if(!getConfig(i2c, buffer, &reg_config_val)) return false;
+	if(!tmp117_getConfig(i2c, buffer, &reg_config_val)) return false;
 
 	// clear bits AVG1 and AVG0
 	reg_config_val &= ~((1UL << 6) | (1UL << 5) );
@@ -157,13 +157,13 @@ bool setAveraging(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_AVG_MODE avg)
  *
  * @return	'true' if the data exchange was successful, otherwise - 'false'
  */
-bool setAlertMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_TnA_MODE mode)
+bool tmp117_setAlertMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_TnA_MODE mode)
 {
 	// value of configuration register
 	uint16_t reg_config_val = 0;
 
 	// get configuration register
-	if(!getConfig(i2c, buffer, &reg_config_val)) return false;
+	if(!tmp117_getConfig(i2c, buffer, &reg_config_val)) return false;
 
 	// set thermal mode
 	if (mode == TMP117_THERM_MODE) {
@@ -192,12 +192,12 @@ bool setAlertMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_TnA_MODE mode
  *
  * @return	'true' if the data exchange was successful, otherwise - 'false'
  */
-bool setConversionMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_CONV_MODE mode) {
+bool tmp117_setConversionMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_CONV_MODE mode) {
 	// value of configuration register
 	uint16_t reg_config_val = 0;
 
 	// get configuration register
-	if(!getConfig(i2c, buffer, &reg_config_val)) return false;
+	if(!tmp117_getConfig(i2c, buffer, &reg_config_val)) return false;
 
 	reg_config_val &= ~((1UL << 11) | (1UL << 10));							// clear MOD1 and MOD0 bits
 	reg_config_val = reg_config_val | ((mode & 0x03) << 10);		// set MOD1 and MOD0 bits
@@ -215,12 +215,12 @@ bool setConversionMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_CONV_MOD
  *
  * @return	'true' if the data exchange was successful, otherwise - 'false'
  */
-bool softwareReset(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
+bool tmp117_softwareReset(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
 	// value of configuration register
 	uint16_t reg_config_val = 0;
 
 	// get configuration register
-	if(!getConfig(i2c, buffer, &reg_config_val)) return false;
+	if(!tmp117_getConfig(i2c, buffer, &reg_config_val)) return false;
 
 	reg_config_val |= (1UL << 1);		// set Soft_Reset bit
 
@@ -237,12 +237,12 @@ bool softwareReset(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
  *
  * @return	'true' if the data exchange was successful, otherwise - 'false'
  */
-bool setAlertPolarity(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_ALERT_PIN_POL polarity) {
+bool tmp117_setAlertPolarity(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_ALERT_PIN_POL polarity) {
 	// value of configuration register
 	uint16_t reg_config_val = 0;
 
 	// get configuration register
-	if(!getConfig(i2c, buffer, &reg_config_val)) return false;
+	if(!tmp117_getConfig(i2c, buffer, &reg_config_val)) return false;
 
 	// low polarity
 	if (polarity == TMP117_POL_H) reg_config_val |= (1UL << 3); 		// set POL bit (active high)
@@ -267,12 +267,12 @@ bool setAlertPolarity(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_ALERT_PIN
  *
  * @return	'true' if the data exchange was successful, otherwise - 'false'
  */
-bool setConversionTime(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_CONV_TIME conv_time) {
+bool tmp117_setConversionTime(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_CONV_TIME conv_time) {
 	// value of configuration register
 	uint16_t reg_config_val = 0;
 
 	// get configuration register
-	if(!getConfig(i2c, buffer, &reg_config_val)) return false;
+	if(!tmp117_getConfig(i2c, buffer, &reg_config_val)) return false;
 
 	reg_config_val &= ~((1UL << 9) | (1UL << 8) | (1UL << 7));       // reset bits CONV2, CONV1, and CONV0
 	reg_config_val = reg_config_val | ((conv_time & 0x07) << 7);     // set bits CONV2, CONV1, and CONV0
@@ -312,7 +312,7 @@ bool setOffsetTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double offse
  *
  * @return	'true' if the data exchange was successful, otherwise - 'false'
  */
-bool getOffsetTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* offset) {
+bool tmp117_getOffsetTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* offset) {
 	return getTemperature(i2c, buffer, TMP117_TEMP_OFFSET_REG, offset);
 }
 
@@ -328,7 +328,7 @@ bool getOffsetTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* offs
  *
  * @return	'true' if the data exchange was successful, otherwise - 'false'
  */
-bool setHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double temp) {
+bool tmp117_setHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double temp) {
 	// convert to two's complement
 	int16_t temp_int = round(temp / TMP117_RESOLUTION);
 	uint16_t temp_two_comp = intToTwosComp(temp_int);
@@ -349,7 +349,7 @@ bool setHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double te
  *
  * @return	'true' if the data exchange was successful, otherwise - 'false'
  */
-bool setLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double temp) {
+bool tmp117_setLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double temp) {
 	// convert to two's complement
 	int16_t temp_int = round(temp / TMP117_RESOLUTION);
 	uint16_t temp_two_comp = intToTwosComp(temp_int);
@@ -367,7 +367,7 @@ bool setLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double tem
  *
  * @return	'true' if the data exchange was successful, otherwise - 'false'
  */
-bool getHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp) {
+bool tmp117_getHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp) {
 	return getTemperature(i2c, buffer, TMP117_THIGH_LIM_REG, temp);
 }
 
@@ -380,7 +380,7 @@ bool getHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* t
  *
  * @return	'true' if the data exchange was successful, otherwise - 'false'
  */
-bool getLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp) {
+bool tmp117_getLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp) {
 	return getTemperature(i2c, buffer, TMP117_TLOW_LIM_REG, temp);
 }
 
@@ -395,9 +395,9 @@ bool getLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* te
  *
  * @return	'true' if the data exchange was successful, otherwise - 'false'
  */
-bool calibrate(I2C_HandleTypeDef* i2c, uint8_t buffer[], double target_temp) {
+bool tmp117_calibrate(I2C_HandleTypeDef* i2c, uint8_t buffer[], double target_temp) {
 	double actual_temp = 0;
-	if(!getResultTemperature(i2c, buffer, &actual_temp)) return false;
+	if(!tmp117_getResultTemperature(i2c, buffer, &actual_temp)) return false;
 	double delta_temp = target_temp - actual_temp;
 	return setOffsetTemperature(i2c, buffer, delta_temp);
 }
@@ -412,7 +412,7 @@ bool calibrate(I2C_HandleTypeDef* i2c, uint8_t buffer[], double target_temp) {
  *
  * @return	'true' if the data exchange was successful, otherwise - 'false'
  */
-bool readEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t eeprom_num, uint16_t* data) {
+bool tmp117_readEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t eeprom_num, uint16_t* data) {
 	if ((eeprom_num < 1) || (eeprom_num > 3)) return false;
 
 		bool read_status = false;		// not read yet
@@ -448,7 +448,7 @@ bool readEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t eeprom_num, u
  *
  * @return	'true' if the data exchange was successful, otherwise - 'false'
  */
-bool writeEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t data, uint8_t eeprom_num) {
+bool tmp117_writeEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t data, uint8_t eeprom_num) {
 	if ((eeprom_num < 1) || (eeprom_num > 3)) return false;
 
 	bool write_status = false;		// not written yet
