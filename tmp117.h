@@ -16,11 +16,11 @@
 #ifndef INC_ICAS_TMP117_H_
 #define INC_ICAS_TMP117_H_
 
+#include <math.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <stdbool.h>
 #include <stm32f3xx_hal.h>
-#include <math.h>
 
 /* user defines ------------------------- */
 
