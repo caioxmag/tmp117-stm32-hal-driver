@@ -14,21 +14,21 @@
 /* global variables () ----------------------- */
 
 /* private (static) functions ----------------------- */
-static int16_t twosCompToInt(uint16_t two_complement_val);							// convert a two's complement value to its integer form
-static uint16_t intToTwosComp(int16_t int_val);													// convert an integer value to its two's complement form
-static bool readReg2B(I2C_HandleTypeDef* i2c, uint8_t buffer[],					// get a 16-bit register value
-												uint8_t reg_addr, uint16_t* reg_value);
-static bool writeReg2B(I2C_HandleTypeDef* i2c, uint8_t buffer[],				// write a 16-bit register value
-								uint8_t reg_addr, uint16_t reg_value);
-static bool setConfig(I2C_HandleTypeDef* i2c, uint8_t buffer[],					// set configuration register
-											uint16_t reg_value);
-static bool getTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[],		// get temperature (result or offset)
-													 uint8_t reg_addr, double* result);
-static bool setOffsetTemperature(I2C_HandleTypeDef* i2c,								// set offset temperature
-																 uint8_t buffer[], double offset);
-static bool lockEEPROM(I2C_HandleTypeDef* i2c, uint8_t buffer[]);				// lock EEPROM
-static bool unlockEEPROM(I2C_HandleTypeDef* i2c, uint8_t buffer[]);			// unlock EEPROM
-static bool isEEPROMbusy(I2C_HandleTypeDef* i2c, uint8_t buffer[]);			// check whether EEPROM is busy
+static int16_t twosCompToInt(uint16_t two_complement_val);              // convert a two's complement value to its integer form
+static uint16_t intToTwosComp(int16_t int_val);                         // convert an integer value to its two's complement form
+static bool readReg2B(I2C_HandleTypeDef* i2c, uint8_t buffer[],         // get a 16-bit register value
+                      uint8_t reg_addr, uint16_t* reg_value);
+static bool writeReg2B(I2C_HandleTypeDef* i2c, uint8_t buffer[],        // write a 16-bit register value
+                       uint8_t reg_addr, uint16_t reg_value);
+static bool setConfig(I2C_HandleTypeDef* i2c, uint8_t buffer[],         // set configuration register
+                      uint16_t reg_value);
+static bool getTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[],    // get temperature (result or offset)
+                           uint8_t reg_addr, double* result);
+static bool setOffsetTemperature(I2C_HandleTypeDef* i2c,                // set offset temperature
+                                 uint8_t buffer[], double offset);
+static bool lockEEPROM(I2C_HandleTypeDef* i2c, uint8_t buffer[]);       // lock EEPROM
+static bool unlockEEPROM(I2C_HandleTypeDef* i2c, uint8_t buffer[]);     // unlock EEPROM
+static bool isEEPROMbusy(I2C_HandleTypeDef* i2c, uint8_t buffer[]);     // check whether EEPROM is busy
 
 /* public functions ----------------------- */
 
@@ -45,8 +45,8 @@ bool tmp117_init(I2C_HandleTypeDef* i2c, uint8_t buffer[])
 	bool init_complete_status = false;
 
 	// set conversion mode
-	tmp117_setConversionMode(i2c, buffer, TMP117_CC_MODE);		// TODO set the shutdown mode as default on start-up
-																										// (see the datasheet, p.15); otherwise, it will start in CC
+	tmp117_setConversionMode(i2c, buffer, TMP117_CC_MODE);  // TODO set the shutdown mode as default on start-up
+	                                                        // (see the datasheet, p.15); otherwise, it will start in CC
 	// set conversion time
 	tmp117_setConversionTime(i2c, buffer, TMP117_C125mS);
 
@@ -167,16 +167,16 @@ bool tmp117_setAlertMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_TnA_MO
 
 	// set thermal mode
 	if (mode == TMP117_THERM_MODE) {
-		reg_config_val |= (1UL << 4);		// set T/nA bit to 1 (Therm mode)
-    reg_config_val &= ~(1UL << 2); 	// set DR/Alert bit to 0 (reflects the status of the alert flags),
-    																// see TMP117 datasheet, p.17
+		reg_config_val |= (1UL << 4);   // set T/nA bit to 1 (Therm mode)
+		reg_config_val &= ~(1UL << 2);  // set DR/Alert bit to 0 (reflects the status of the alert flags),
+		                                // see TMP117 datasheet, p.17
 	// set alert mode
 	} else if (mode == TMP117_ALERT_MODE) {
-		reg_config_val &= ~(1UL << 4);	// set T/nA bit to 0 (Alert mode)
-    reg_config_val &= ~(1UL << 2); 	// set DR/Alert bit to 0
+		reg_config_val &= ~(1UL << 4);  // set T/nA bit to 0 (Alert mode)
+		reg_config_val &= ~(1UL << 2);  // set DR/Alert bit to 0
 	// set data mode
 	} else {
-		reg_config_val |= (1UL << 2); 	// set DR/Alert bit to 1 (ALERT pin reflects the status of the data ready flag)
+		reg_config_val |= (1UL << 2);   // set DR/Alert bit to 1 (ALERT pin reflects the status of the data ready flag)
 	}
 
 	// set configuration register
@@ -199,8 +199,8 @@ bool tmp117_setConversionMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_C
 	// get configuration register
 	if(!tmp117_getConfig(i2c, buffer, &reg_config_val)) return false;
 
-	reg_config_val &= ~((1UL << 11) | (1UL << 10));							// clear MOD1 and MOD0 bits
-	reg_config_val = reg_config_val | ((mode & 0x03) << 10);		// set MOD1 and MOD0 bits
+	reg_config_val &= ~((1UL << 11) | (1UL << 10));             // clear MOD1 and MOD0 bits
+	reg_config_val = reg_config_val | ((mode & 0x03) << 10);    // set MOD1 and MOD0 bits
 
 	// set configuration register
 	return setConfig(i2c, buffer, reg_config_val);
@@ -222,7 +222,7 @@ bool tmp117_softwareReset(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
 	// get configuration register
 	if(!tmp117_getConfig(i2c, buffer, &reg_config_val)) return false;
 
-	reg_config_val |= (1UL << 1);		// set Soft_Reset bit
+	reg_config_val |= (1UL << 1);   // set Soft_Reset bit
 
 	// set configuration register
 	return setConfig(i2c, buffer, reg_config_val);
@@ -245,8 +245,8 @@ bool tmp117_setAlertPolarity(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_AL
 	if(!tmp117_getConfig(i2c, buffer, &reg_config_val)) return false;
 
 	// low polarity
-	if (polarity == TMP117_POL_H) reg_config_val |= (1UL << 3); 		// set POL bit (active high)
-	if (polarity == TMP117_POL_L) reg_config_val &= ~(1UL << 3); 		// reset POL bit (active low)
+	if (polarity == TMP117_POL_H) reg_config_val |= (1UL << 3);     // set POL bit (active high)
+	if (polarity == TMP117_POL_L) reg_config_val &= ~(1UL << 3);    // reset POL bit (active low)
 
 	// set configuration register
 	return setConfig(i2c, buffer, reg_config_val);
@@ -415,27 +415,27 @@ bool tmp117_calibrate(I2C_HandleTypeDef* i2c, uint8_t buffer[], double target_te
 bool tmp117_readEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t eeprom_num, uint16_t* data) {
 	if ((eeprom_num < 1) || (eeprom_num > 3)) return false;
 
-		bool read_status = false;		// not read yet
+	bool read_status = false;   // not read yet
 
-		// if EEPROM is not busy
-		if (!isEEPROMbusy(i2c, buffer)) {
-			// attempt to read a EEPROM
-			switch (eeprom_num) {
-				case 1:
-					read_status = readReg2B(i2c, buffer, TMP117_EEPROM1_REG, data);
-					break;
-				case 2:
-					read_status = readReg2B(i2c, buffer, TMP117_EEPROM2_REG, data);
-					break;
-				case 3:
-					read_status = readReg2B(i2c, buffer, TMP117_EEPROM3_REG, data);
-					break;
-				default:
-					read_status = false;
-					break;
-			}
+	// if EEPROM is not busy
+	if (!isEEPROMbusy(i2c, buffer)) {
+		// attempt to read a EEPROM
+		switch (eeprom_num) {
+			case 1:
+				read_status = readReg2B(i2c, buffer, TMP117_EEPROM1_REG, data);
+				break;
+			case 2:
+				read_status = readReg2B(i2c, buffer, TMP117_EEPROM2_REG, data);
+				break;
+			case 3:
+				read_status = readReg2B(i2c, buffer, TMP117_EEPROM3_REG, data);
+				break;
+			default:
+				read_status = false;
+				break;
 		}
-		return read_status;
+	}
+	return read_status;
 }
 
 /*
@@ -449,9 +449,9 @@ bool tmp117_readEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t eeprom
  * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
 bool tmp117_writeEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t data, uint8_t eeprom_num) {
-	if ((eeprom_num < 1) || (eeprom_num > 3)) return false;
+  if ((eeprom_num < 1) || (eeprom_num > 3)) return false;
 
-	bool write_status = false;		// not written yet
+  bool write_status = false;    // not written yet
 
 	// if EEPROM is not busy
 	if (!isEEPROMbusy(i2c, buffer)) {
@@ -462,15 +462,15 @@ bool tmp117_writeEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t data
 			// attempt to write a EEPROM
 			switch (eeprom_num) {
 				case 1:
-					write_status = writeReg2B(i2c, buffer,	TMP117_EEPROM1_REG, data);
-					HAL_Delay(7);	// wait 7 ms (see datasheet, p.19)
+					write_status = writeReg2B(i2c, buffer,  TMP117_EEPROM1_REG, data);
+					HAL_Delay(7); // wait 7 ms (see datasheet, p.19)
 					break;
 				case 2:
-					write_status = writeReg2B(i2c, buffer,	TMP117_EEPROM2_REG, data);
+					write_status = writeReg2B(i2c, buffer,  TMP117_EEPROM2_REG, data);
 					HAL_Delay(7);
 					break;
 				case 3:
-					write_status = writeReg2B(i2c, buffer,	TMP117_EEPROM3_REG, data);
+					write_status = writeReg2B(i2c, buffer,  TMP117_EEPROM3_REG, data);
 					HAL_Delay(7);
 					break;
 				default:
@@ -546,13 +546,13 @@ static uint16_t intToTwosComp(int16_t int_val) {
  */
 bool readReg2B(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t reg_addr, uint16_t* reg_value)
 {
-	HAL_StatusTypeDef ret;																			// return status of i2c
+	HAL_StatusTypeDef ret;                                    	 // return status of i2c
 
 	buffer[0] = reg_addr;
 
 	// store the device id register into the 8-bit pointer register of the sensor
-	ret = HAL_I2C_Master_Transmit(i2c, TMP117_I2C_W_ADDR_GND,		// blocking function
-																buffer, 1, HAL_MAX_DELAY);
+	ret = HAL_I2C_Master_Transmit(i2c, TMP117_I2C_W_ADDR_GND,  // blocking function
+	                              buffer, 1, HAL_MAX_DELAY);
 	if (ret != HAL_OK) {
 		strcpy((char*)buffer, "Error Tx I2C\r\n");
 		return false;
@@ -560,7 +560,7 @@ bool readReg2B(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t reg_addr, uint1
 
 	// receive the two-byte (most significant byte first) value from the sensor
 	ret = HAL_I2C_Master_Receive(i2c, TMP117_I2C_R_ADDR_GND,
-															 buffer, 2, HAL_MAX_DELAY);
+	                             buffer, 2, HAL_MAX_DELAY);
 	if (ret != HAL_OK) {
 		strcpy((char*)buffer, "Error Rx I2C\r\n");
 		return false;
@@ -583,14 +583,14 @@ bool readReg2B(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t reg_addr, uint1
  */
 bool writeReg2B(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t reg_addr, uint16_t reg_value)
 {
-	HAL_StatusTypeDef ret;						// return status of i2c
-	buffer[0] = reg_addr;							// 8-bit pointer register value of the sensor
-	buffer[1] = (reg_value >> 8);			// MSB
-	buffer[2] = (reg_value & 0xFF);		// LSB
+	HAL_StatusTypeDef ret;            // return status of i2c
+	buffer[0] = reg_addr;             // 8-bit pointer register value of the sensor
+	buffer[1] = (reg_value >> 8);     // MSB
+	buffer[2] = (reg_value & 0xFF);   // LSB
 
 	// transmit the data to the sensor
-	ret = HAL_I2C_Master_Transmit(i2c, TMP117_I2C_W_ADDR_GND,		// blocking function
-																buffer, 3, HAL_MAX_DELAY);
+	ret = HAL_I2C_Master_Transmit(i2c, TMP117_I2C_W_ADDR_GND,   // blocking function
+	                              buffer, 3, HAL_MAX_DELAY);
 	if (ret != HAL_OK) {
 		strcpy((char*)buffer, "Error Tx I2C\r\n");
 		return false;
@@ -666,6 +666,6 @@ bool unlockEEPROM(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
  */
 static bool isEEPROMbusy(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
 	uint16_t code = 0;
-	if (!readReg2B(i2c, buffer,	TMP117_EEPROM_UL_REG, &code)) return false;
+	if (!readReg2B(i2c, buffer, TMP117_EEPROM_UL_REG, &code)) return false;
 	return (bool)((code >> 14) & 0x01);
 }
