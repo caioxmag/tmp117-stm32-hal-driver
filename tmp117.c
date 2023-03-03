@@ -45,10 +45,10 @@ bool tmp117_init(I2C_HandleTypeDef* i2c, uint8_t buffer[])
 	bool init_complete_status = false;
 
 	// set conversion mode
-	tmp117_setConversionMode(i2c, buffer, TMP117_SD_MODE);		// TODO set the shutdown mode as default on start-up
+	tmp117_setConversionMode(i2c, buffer, TMP117_CC_MODE);		// TODO set the shutdown mode as default on start-up
 																										// (see the datasheet, p.15); otherwise, it will start in CC
 	// set conversion time
-	tmp117_setConversionTime(i2c, buffer, TMP117_C16S);
+	tmp117_setConversionTime(i2c, buffer, TMP117_C125mS);
 
 	// set active high polarity of the ALERT pin
 	tmp117_setAlertPolarity(i2c, buffer, TMP117_POL_H);
