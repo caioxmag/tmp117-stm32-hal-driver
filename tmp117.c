@@ -5,7 +5,7 @@
  * @version:  0.1a
  * @date:     Apr 5, 2022
  * @brief:    STM32 HAL-based library for the TMP117 temperature sensor.
- ******************************************************************************     
+ ******************************************************************************
  */
 
 #include <string.h>
@@ -14,21 +14,29 @@
 /* global variables () ----------------------- */
 
 /* private (static) functions ----------------------- */
-static int16_t twosCompToInt(uint16_t two_complement_val);              // convert a two's complement value to its integer form
-static uint16_t intToTwosComp(int16_t int_val);                         // convert an integer value to its two's complement form
-static bool readReg2B(I2C_HandleTypeDef* i2c, uint8_t buffer[],         // get a 16-bit register value
-                      uint8_t reg_addr, uint16_t* reg_value);
-static bool writeReg2B(I2C_HandleTypeDef* i2c, uint8_t buffer[],        // write a 16-bit register value
-                       uint8_t reg_addr, uint16_t reg_value);
-static bool setConfig(I2C_HandleTypeDef* i2c, uint8_t buffer[],         // set configuration register
-                      uint16_t reg_value);
-static bool getTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[],    // get temperature (result or offset)
-                           uint8_t reg_addr, double* result);
-static bool setOffsetTemperature(I2C_HandleTypeDef* i2c,                // set offset temperature
-                                 uint8_t buffer[], double offset);
-static bool lockEEPROM(I2C_HandleTypeDef* i2c, uint8_t buffer[]);       // lock EEPROM
-static bool unlockEEPROM(I2C_HandleTypeDef* i2c, uint8_t buffer[]);     // unlock EEPROM
-static bool isEEPROMbusy(I2C_HandleTypeDef* i2c, uint8_t buffer[]);     // check whether EEPROM is busy
+static int16_t twosCompToInt (uint16_t two_complement_val);           // convert a two's complement value to its integer form
+static uint16_t intToTwosComp (int16_t int_val);                      // convert an integer value to its two's complement form
+static bool readReg2B (I2C_HandleTypeDef* i2c,                        // get a 16-bit register value
+                       uint8_t buffer[],
+                       uint8_t reg_addr,
+                       uint16_t* reg_value);
+static bool writeReg2B (I2C_HandleTypeDef* i2c,                       // write a 16-bit register value
+                        uint8_t buffer[],
+                        uint8_t reg_addr,
+                        uint16_t reg_value);
+static bool setConfig (I2C_HandleTypeDef* i2c,                        // set configuration register
+                       uint8_t buffer[],
+                       uint16_t reg_value);
+static bool getTemperature (I2C_HandleTypeDef* i2c,                   // get temperature (result or offset)
+                            uint8_t buffer[],
+                            uint8_t reg_addr,
+                            double* result);
+static bool setOffsetTemperature (I2C_HandleTypeDef* i2c,             // set offset temperature
+                                  uint8_t buffer[],
+                                  double offset);
+static bool lockEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[]);    // lock EEPROM
+static bool unlockEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[]);  // unlock EEPROM
+static bool isEEPROMbusy (I2C_HandleTypeDef* i2c, uint8_t buffer[]);  // check whether EEPROM is busy
 
 /* public functions ----------------------- */
 
@@ -192,7 +200,8 @@ bool tmp117_setAlertMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_TnA_MO
  *
  * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
-bool tmp117_setConversionMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_CONV_MODE mode) {
+bool tmp117_setConversionMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_CONV_MODE mode)
+{
 	// value of configuration register
 	uint16_t reg_config_val = 0;
 
@@ -215,7 +224,8 @@ bool tmp117_setConversionMode(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_C
  *
  * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
-bool tmp117_softwareReset(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
+bool tmp117_softwareReset(I2C_HandleTypeDef* i2c, uint8_t buffer[])
+{
 	// value of configuration register
 	uint16_t reg_config_val = 0;
 
@@ -237,7 +247,8 @@ bool tmp117_softwareReset(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
  *
  * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
-bool tmp117_setAlertPolarity(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_ALERT_PIN_POL polarity) {
+bool tmp117_setAlertPolarity(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_ALERT_PIN_POL polarity)
+{
 	// value of configuration register
 	uint16_t reg_config_val = 0;
 
@@ -267,7 +278,8 @@ bool tmp117_setAlertPolarity(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_AL
  *
  * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
-bool tmp117_setConversionTime(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_CONV_TIME conv_time) {
+bool tmp117_setConversionTime(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_CONV_TIME conv_time)
+{
 	// value of configuration register
 	uint16_t reg_config_val = 0;
 
@@ -294,7 +306,8 @@ bool tmp117_setConversionTime(I2C_HandleTypeDef* i2c, uint8_t buffer[], TMP117_C
  *
  * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
-bool setOffsetTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double offset) {
+bool setOffsetTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double offset)
+{
 	// convert to two's complement
 	int16_t offset_int = round(offset / TMP117_RESOLUTION);
 	uint16_t offset_two_comp = intToTwosComp(offset_int);
@@ -312,7 +325,8 @@ bool setOffsetTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double offse
  *
  * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
-bool tmp117_getOffsetTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* offset) {
+bool tmp117_getOffsetTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* offset)
+{
 	return getTemperature(i2c, buffer, TMP117_TEMP_OFFSET_REG, offset);
 }
 
@@ -328,7 +342,8 @@ bool tmp117_getOffsetTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], doubl
  *
  * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
-bool tmp117_setHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double temp) {
+bool tmp117_setHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double temp)
+{
 	// convert to two's complement
 	int16_t temp_int = round(temp / TMP117_RESOLUTION);
 	uint16_t temp_two_comp = intToTwosComp(temp_int);
@@ -349,7 +364,8 @@ bool tmp117_setHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], do
  *
  * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
-bool tmp117_setLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double temp) {
+bool tmp117_setLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double temp)
+{
 	// convert to two's complement
 	int16_t temp_int = round(temp / TMP117_RESOLUTION);
 	uint16_t temp_two_comp = intToTwosComp(temp_int);
@@ -367,7 +383,8 @@ bool tmp117_setLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], dou
  *
  * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
-bool tmp117_getHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp) {
+bool tmp117_getHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp)
+{
 	return getTemperature(i2c, buffer, TMP117_THIGH_LIM_REG, temp);
 }
 
@@ -380,7 +397,8 @@ bool tmp117_getHighLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], do
  *
  * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
-bool tmp117_getLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp) {
+bool tmp117_getLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], double* temp)
+{
 	return getTemperature(i2c, buffer, TMP117_TLOW_LIM_REG, temp);
 }
 
@@ -395,7 +413,8 @@ bool tmp117_getLowLimitTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], dou
  *
  * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
-bool tmp117_calibrate(I2C_HandleTypeDef* i2c, uint8_t buffer[], double target_temp) {
+bool tmp117_calibrate(I2C_HandleTypeDef* i2c, uint8_t buffer[], double target_temp)
+{
 	double actual_temp = 0;
 	if(!tmp117_getResultTemperature(i2c, buffer, &actual_temp)) return false;
 	double delta_temp = target_temp - actual_temp;
@@ -412,7 +431,8 @@ bool tmp117_calibrate(I2C_HandleTypeDef* i2c, uint8_t buffer[], double target_te
  *
  * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
-bool tmp117_readEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t eeprom_num, uint16_t* data) {
+bool tmp117_readEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t eeprom_num, uint16_t* data)
+{
 	if ((eeprom_num < 1) || (eeprom_num > 3)) return false;
 
 	bool read_status = false;   // not read yet
@@ -448,7 +468,8 @@ bool tmp117_readEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t eeprom
  *
  * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
-bool tmp117_writeEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t data, uint8_t eeprom_num) {
+bool tmp117_writeEEPROM (I2C_HandleTypeDef* i2c, uint8_t buffer[], uint16_t data, uint8_t eeprom_num)
+{
   if ((eeprom_num < 1) || (eeprom_num > 3)) return false;
 
   bool write_status = false;    // not written yet
@@ -524,7 +545,8 @@ int16_t twosCompToInt(uint16_t two_complement_val)
  * @param     a 16-bit integer value to be converted
  * @return    a two's compliment conversion result
  */
-static uint16_t intToTwosComp(int16_t int_val) {
+static uint16_t intToTwosComp(int16_t int_val)
+{
 	// if positive
 	if (int_val >= 0) return int_val;
 	// if negative
@@ -608,7 +630,8 @@ bool writeReg2B(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t reg_addr, uint
  *
  * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
-bool getTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t reg_addr, double* result) {
+bool getTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t reg_addr, double* result)
+{
 	uint16_t twos_comp_temp_val = 0;
 	if (!readReg2B(i2c, buffer, reg_addr, &twos_comp_temp_val)) return false;
 
@@ -629,7 +652,8 @@ bool getTemperature(I2C_HandleTypeDef* i2c, uint8_t buffer[], uint8_t reg_addr, 
  *
  * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
-bool lockEEPROM(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
+bool lockEEPROM(I2C_HandleTypeDef* i2c, uint8_t buffer[])
+{
 	// reset bit 15 (EUN) of the EEPROM Unlock Register
 	uint16_t code = 0;
 	code &= ~(1UL << 15);
@@ -645,7 +669,8 @@ bool lockEEPROM(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
  *
  * @return  'true' if the data exchange was successful, otherwise - 'false'
  */
-bool unlockEEPROM(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
+bool unlockEEPROM(I2C_HandleTypeDef* i2c, uint8_t buffer[])
+{
 	// set bit 15 (EUN) of the EEPROM Unlock Register
 	uint16_t code = 0;
 	code |= 1UL << 15;
@@ -664,7 +689,8 @@ bool unlockEEPROM(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
  *
  * @return  'true' if the EEPROM is busy, otherwise - 'false'
  */
-static bool isEEPROMbusy(I2C_HandleTypeDef* i2c, uint8_t buffer[]) {
+static bool isEEPROMbusy(I2C_HandleTypeDef* i2c, uint8_t buffer[])
+{
 	uint16_t code = 0;
 	if (!readReg2B(i2c, buffer, TMP117_EEPROM_UL_REG, &code)) return false;
 	return (bool)((code >> 14) & 0x01);
